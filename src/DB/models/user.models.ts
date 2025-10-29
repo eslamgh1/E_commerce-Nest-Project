@@ -1,6 +1,7 @@
 import { MongooseModule, Prop, Schema, SchemaFactory, Virtual } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
 import { userGender, userProvider, userRole } from "src/common/enums";
+import type { HOtpDocument } from "./otp.models";
 
 //toJSON:{virtuals:true}  to to get response
 //toObject:{virtuals:true} to to get console.log()
@@ -48,8 +49,19 @@ export class User {
     @Prop({type:Date, default:Date.now})
     changecredentailAt: Date;
 
+    @Virtual()
+    otp:HOtpDocument
+
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
 export type HUserDocument = HydratedDocument<User>;
+export const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.virtual("otp" ,{
+    ref:"Otp",
+    localField:"_id",
+    foreignField:"createdBy"
+})
+
+
 export const UserModel = MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])

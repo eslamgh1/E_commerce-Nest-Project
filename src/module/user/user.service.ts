@@ -1,14 +1,18 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserDto } from '../dto/user.dto';
-import { UserRepo } from 'src/DB';
-import { userGender } from 'src/common/enums';
+import { OtpRepo, UserRepo } from 'src/DB';
+import { otpTypeEnum, userGender } from 'src/common/enums';
 import { emailTemplate, generateOTP, sendEmail } from 'src/common';
+import { Hash } from 'src/common/security/hash';
 
 
 
 @Injectable()
 export class UserService {
-constructor(private readonly userRepo:UserRepo){}
+constructor(
+    private readonly userRepo:UserRepo,
+    private readonly otpRepo:OtpRepo
+){}
 
 // signUp method is used to register a new user
     async signUp(body:UserDto){
@@ -21,7 +25,7 @@ constructor(private readonly userRepo:UserRepo){}
 
         const user = await this.userRepo.create({
             email,
-            password,
+            password: await Hash({plainText: password}),
             age,
             fName,
             lName,
@@ -37,6 +41,12 @@ constructor(private readonly userRepo:UserRepo){}
             to : email,
             subject : "Confirm your email",
            html : emailTemplate("12345", "Please confirm your email"),
+        })
+        await this.otpRepo.create({
+            code:"12345",
+            createdBy:user._id,
+            type:otpTypeEnum.CONFIRM_EMAIL,
+            expiresAt: new Date(Date.now() +  60 * 1000)
         })
 
         return user
