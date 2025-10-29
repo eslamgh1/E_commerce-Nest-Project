@@ -11,9 +11,13 @@ export class UserController {
 //userDto is a class that is used to validate the data that is sent to the server
 constructor(private readonly userService: UserService){}
 
+
+
     @Post("signup")
-    signUp // <--- This is the method name
-    (@Body() body: UserDto){
-    return this.userService.signUp(body)
-    }
+    async signUp(@Body() body: UserDto) {
+        // Await the service method (since it's async)
+        return await this.userService.signUp(body);    
+ 
+} 
+
 }

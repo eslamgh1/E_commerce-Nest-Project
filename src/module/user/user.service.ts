@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserDto } from '../dto/user.dto';
 import { UserRepo } from 'src/DB';
 import { userGender } from 'src/common/enums';
+import { emailTemplate, generateOTP, sendEmail } from 'src/common';
 
 
 
@@ -13,12 +14,12 @@ constructor(private readonly userRepo:UserRepo){}
     async signUp(body:UserDto){
         const {fName , lName, email, password , age  , gender } = body
 
-        const userExist = await this.userRepo.findOne({filter :     email})
+        const userExist = await this.userRepo.findOne({filter :{email}})
         if(userExist){
             throw new BadRequestException("User already exists")
         }
 
-        const user = this.userRepo.create({
+        const user = await this.userRepo.create({
             email,
             password,
             age,
@@ -27,13 +28,21 @@ constructor(private readonly userRepo:UserRepo){}
             gender : gender ? (gender as userGender) : userGender.MALE
         })
 
+
         if(!user){
             throw new BadRequestException("User not created")
         }
 
-        return user
+        await sendEmail({
+            to : email,
+            subject : "Confirm your email",
+           html : emailTemplate("12345", "Please confirm your email"),
+        })
 
+        return user
     }
+
+
 
     // =================    End line of class UserService ===========================//
     

@@ -13,11 +13,11 @@ import { Connection } from 'mongoose';
     isGlobal: true
   }), 
   UserModule,
-  MongooseModule.forRoot(process.env.MONGO_URL as string , {
+  MongooseModule.forRoot(process.env.DB_URL_LOCAL as string , {
     
   onConnectionCreate: (connection: Connection) => {
-    connection.on('connected', () => console.log(`Mongo DB connected successfully ${process.env.MONGO_URL}`));  
-    connection.on('disconnected', () => console.log(`Mongo DB disconnected successfully ${process.env.MONGO_URL}`));
+    connection.on('connected', () => console.log(`Mongo DB connected successfully ${process.env.DB_URL_LOCAL}`));  
+    connection.on('disconnected', () => console.log(`Mongo DB disconnected successfully ${process.env.DB_URL_LOCAL}`));
 
     return connection;
   }
