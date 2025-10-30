@@ -1,6 +1,5 @@
 import { DeleteResult, HydratedDocument, Model, ProjectionType, QueryOptions, RootFilterQuery, UpdateQuery } from 'mongoose';
 
-
 export abstract class DBRepo<TDocument> {
 
   constructor(protected readonly model: Model<TDocument>) { }
@@ -10,16 +9,31 @@ export abstract class DBRepo<TDocument> {
 
     return this.model.create(data);
   }
-
   // ref: 8-paginate [ Socket Folder]
   // create find one method
-  async findOne(
-    filter: RootFilterQuery<TDocument>, 
-    projection?: ProjectionType<TDocument>, // projection insteaf of select?
-    options?: QueryOptions<TDocument>): Promise<HydratedDocument<TDocument> | null> {
+  // async findOne(
+  //   filter: RootFilterQuery<TDocument>, 
+  //   projection?: ProjectionType<TDocument>, // projection insteaf of select?
+  //   options?: QueryOptions<TDocument>): Promise<HydratedDocument<TDocument> | null> {
 
-    return this.model.findOne(filter, projection, options)
-  }
+  //   return this.model.findOne(filter, projection, options)
+  // }
+
+  // Refactored version (using named parameters)
+  async findOne({
+  filter,
+  projection,
+  options,
+}: {
+  filter: RootFilterQuery<TDocument>;
+  projection?: ProjectionType<TDocument>;
+  options?: QueryOptions<TDocument>;
+}): Promise<HydratedDocument<TDocument> | null> {
+  return this.model.findOne(filter, projection, options);
+}
+
+
+
 
 
   // create find method
@@ -79,8 +93,17 @@ export abstract class DBRepo<TDocument> {
   }
 
 // create delete method
-  async deleteOne(filter: RootFilterQuery<TDocument>): Promise<DeleteResult> {
-    return this.model.deleteOne(filter);
-  }
+  // async deleteOne(filter: RootFilterQuery<TDocument>): Promise<DeleteResult> {
+  //   return this.model.deleteOne(filter);
+  // }
+
+  async deleteOne({
+  filter,
+}: {
+  filter: RootFilterQuery<TDocument>;
+}): Promise<DeleteResult> {
+  return this.model.deleteOne(filter);
+}
+
 }
 

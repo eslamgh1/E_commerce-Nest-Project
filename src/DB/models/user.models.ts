@@ -2,6 +2,7 @@ import { MongooseModule, Prop, Schema, SchemaFactory, Virtual } from "@nestjs/mo
 import { HydratedDocument } from "mongoose";
 import { userGender, userProvider, userRole } from "src/common/enums";
 import type { HOtpDocument } from "./otp.models";
+import { Hash } from "src/common/security/hash";
 
 //toJSON:{virtuals:true}  to to get response
 //toObject:{virtuals:true} to to get console.log()
@@ -57,11 +58,16 @@ export class User {
 export type HUserDocument = HydratedDocument<User>;
 export const UserSchema = SchemaFactory.createForClass(User);
 
+UserSchema.pre("save" , async function(next){
+    if(this.isModified("password")){
+        this.password = await Hash({plainText: this.password})
+    }
+    next()
+})
 UserSchema.virtual("otp" ,{
     ref:"Otp",
     localField:"_id",
     foreignField:"createdBy"
 })
-
 
 export const UserModel = MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])

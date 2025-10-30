@@ -4,11 +4,12 @@ import { UserService } from './user.service';
 import { UserModel } from 'src/DB/models';
 import { OtpRepo, UserRepo } from 'src/DB';
 import { OtpModel } from 'src/DB/models';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Module({
   imports:[UserModel , OtpModel],
   controllers: [UserController],
-  providers: [UserService,UserRepo,OtpRepo] // service,repo
+  providers: [UserService,UserRepo,OtpRepo,JwtService] // service,repo
 }) 
 export class UserModule {}

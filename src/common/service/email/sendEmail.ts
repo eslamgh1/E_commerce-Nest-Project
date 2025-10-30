@@ -23,8 +23,7 @@ const transporter = nodemailer.createTransport({
   // console.log("Message sent:", info.messageId);
 }
 
-export const generateOTP = async ()=>{
+export const generateOTP =  ()=>{
   return Math.floor(Math.random() *( 999999-100000 +1 ) + 100000)
 }
 
-console.log(generateOTP());

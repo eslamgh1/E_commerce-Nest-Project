@@ -2,8 +2,29 @@ import { Allow, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsString, Length, Max, Mi
 import { IsMatch } from "src/common/decorators";
 import { userGender } from "src/common/enums";
 
+export class ResendOtpDto {
+    @IsString()
+    @IsNotEmpty()
+    @IsEmail()
+    email: string;
+}
+
+export class confirmEmailDto extends ResendOtpDto{
+    @IsString()
+    @IsNotEmpty()
+    code: string;
+}
+
+export class loginDto extends ResendOtpDto{
+  @IsString()
+  @IsNotEmpty()
+  // @IsStrongPassword()
+  password: string;
+
+}
+
 //UserDto is a class that is used to validate the data that body is sent to the server
-export class UserDto {
+export class UserDto extends loginDto {
   @IsString()
   @Length(2, 255)
   @IsNotEmpty()
@@ -14,10 +35,6 @@ export class UserDto {
   @Length(2, 255)
   @IsNotEmpty()
   lName: string;
-
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
 
   @IsNumber()
   @Min(15)
@@ -31,10 +48,7 @@ export class UserDto {
   @IsEnum(userGender)
   gender:string
 
-  @IsString()
-  @IsNotEmpty()
-  // @IsStrongPassword()
-  password: string;
+
 
   //data === this  // true (conceptually) // ← 'this' is the instance
   @ValidateIf((data : UserDto) => {
