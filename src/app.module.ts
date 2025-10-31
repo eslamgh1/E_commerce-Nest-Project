@@ -6,6 +6,7 @@ import { UserModule } from './module/user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,4 +29,6 @@ import { Connection } from 'mongoose';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule { 
+
+}

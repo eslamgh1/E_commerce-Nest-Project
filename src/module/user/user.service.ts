@@ -6,8 +6,7 @@ import {  generateOTP } from 'src/common';
 import { Types } from 'mongoose';
 import { Compare } from 'src/common/security/hash';
 import { JwtService } from '@nestjs/jwt';
-
-
+import { TokenService } from 'src/common/service/token.services';
 
 
 @Injectable()
@@ -15,7 +14,7 @@ export class UserService {
     constructor(
         private readonly userRepo: UserRepo,
         private readonly otpRepo: OtpRepo,
-        private jwtService: JwtService
+        private TokenService: TokenService
     ) { }
 
 
@@ -151,31 +150,23 @@ export class UserService {
             throw new BadRequestException("Invalid code")
         }
        
-        const accessToken = await this.jwtService.signAsync(
-         { userId: user._id },
-            {
+        const accessToken = await this.TokenService.GenerateToken(
+            { payload: { email, id: user._id },
+            options: {
                 secret: user.role === userRole.USER ? process.env.SECRET_USER_TOKEN! : process.env.SECRET_ADMIN_TOKEN!,
                 expiresIn: "1y"
             }
-        )
-        const refreshToken = await this.jwtService.signAsync(
-            { userId: user._id },
-            {
-                secret: user.role === userRole.USER ? process.env.REFRESH_SECRET_USER_TOKEN! : process.env.REFRESH_SECRET_ADMIN_TOKEN!,
-                expiresIn: "1y"
             }
         )
 
-        // const accessToken = await GenerateToken({
-        //     payload: { userId: user._id },
-        //     secret: user.role === userRole.USER ? process.env.SECRET_USER_TOKEN! : process.env.SECRET_ADMIN_TOKEN!,
-        //     options: { expiresIn: "1y" }
-        // })
-        // const refreshToken = await GenerateToken({
-        //     payload: { userId: user._id },
-        //     secret: user.role === userRole.USER ? process.env.REFRESH_SECRET_USER_TOKEN! : process.env.REFRESH_SECRET_ADMIN_TOKEN!,
-        //     options: { expiresIn: "1y" }
-        // })
+        const refreshToken = await this.TokenService.GenerateToken(
+         { payload: { email, id: user._id },    
+            options: {
+                secret: user.role === userRole.USER ? process.env.REFRESH_SECRET_USER_TOKEN! : process.env.REFRESH_SECRET_ADMIN_TOKEN!,
+                expiresIn: "1y"
+             }}
+        )
+
 
      
         return { message: "user logged in successfully" ,accessToken ,refreshToken }

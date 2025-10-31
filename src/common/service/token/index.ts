@@ -1,22 +1,22 @@
-import {  JwtPayload, sign, SignOptions, verify } from "jsonwebtoken";
+// import {  JwtPayload, sign, SignOptions, verify } from "jsonwebtoken";
 
 
-export const GenerateToken = async ({ payload, secret, options }: {
-  payload: Object,
-  secret: string,
-  options?: SignOptions
+// export const GenerateToken = async ({ payload, secret, options }: {
+//   payload: Object,
+//   secret: string,
+//   options?: SignOptions
 
-}): Promise<string>=> {
+// }): Promise<string>=> {
 
-return sign(payload, secret, options);
-}
+// return sign(payload, secret, options);
+// }
 
-export const VerifyToken = async ({ token, secret }: {
-  token: string,
-  secret: string
-}): Promise<JwtPayload> => {
-  return verify(token, secret) as JwtPayload;
-};
+// export const VerifyToken = async ({ token, secret }: {
+//   token: string,
+//   secret: string
+// }): Promise<JwtPayload> => {
+//   return verify(token, secret) as JwtPayload;
+// };
 
 
 
