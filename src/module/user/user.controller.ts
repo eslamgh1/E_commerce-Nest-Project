@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Patch, Post, Query, Request, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { confirmEmailDto, loginDto, ResendOtpDto, UserDto } from '../dto/user.dto';
 import { UserService } from './user.service';
-import type { UserWithRequest } from 'src/common/interfaces';
-
+import type {HUserDocument } from 'src/DB';
+import { User } from 'src/common/decorators/user.decorator';
+import { Auth } from 'src/common/decorators/auth.decorators';
 
 
 
@@ -35,13 +36,18 @@ export class UserController {
         return await this.userService.login(body);
     }
 
+    // @Token() 
+    // @Role([userRole.USER])
+    // @UseGuards(AuthunticationGuard,AuthorizationGuard)
+    @Auth()
     @Get("profile")
+    
     profile(
-        @Request() req: UserWithRequest
+        @User() user:HUserDocument
     ) {
     // console.log({req})
 
-        return { message: "profile" , user: req.user }
+        return { message: "profile" , user : user  }
     }
 
 }

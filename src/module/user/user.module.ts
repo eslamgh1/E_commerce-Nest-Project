@@ -6,7 +6,7 @@ import { OtpRepo, UserRepo } from 'src/DB';
 import { OtpModel } from 'src/DB/models';
 import { JwtService } from '@nestjs/jwt';
 import { TokenService } from 'src/common/service/token.services';
-import { AuthenticationMiddleware } from 'src/middleware';
+// import { AuthenticationMiddleware } from 'src/middleware';
 
 
 @Module({
@@ -14,13 +14,15 @@ import { AuthenticationMiddleware } from 'src/middleware';
   controllers: [UserController],
   providers: [UserService,UserRepo,OtpRepo,JwtService,TokenService] // service,repo
 }) 
+
+// we ignore the middleware beca
 export class UserModule {
-    configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthenticationMiddleware)
-      .forRoutes({
-        path: 'users/*demo',
-        method: RequestMethod.ALL
-      });
-  }
+  //   configure(consumer: MiddlewareConsumer) {
+  //   consumer
+  //     .apply(tokenType(),AuthenticationMiddleware)
+  //     .forRoutes({
+  //       path: 'users/*demo',
+  //       method: RequestMethod.ALL
+  //     });
+  // }
 }

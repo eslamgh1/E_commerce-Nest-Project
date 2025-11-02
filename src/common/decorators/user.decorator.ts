@@ -1,4 +1,6 @@
 import { ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments, registerDecorator, ValidationOptions } from 'class-validator';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+
 
 @ValidatorConstraint({ name: 'matchFields', async: false })
 export class MatchFields implements ValidatorConstraintInterface {
@@ -27,4 +29,16 @@ export function IsMatch(constraints: string[], validationOptions?: ValidationOpt
     });
   };
 }
+
+
+
+
+
+export const User = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    return request.user;
+  },
+);
+
 
