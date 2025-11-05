@@ -5,7 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './module/user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
+import { S3Service } from './common';
+import { BrandModule } from './brand/brand.module';
 
+// Both AppModule and AppController now use the same class referenc
 
 @Module({
   imports: [
@@ -23,11 +26,12 @@ import { Connection } from 'mongoose';
     return connection;
   }
   }),
+  BrandModule,
 
   ],
 
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService , S3Service],
 })
 export class AppModule { 
 

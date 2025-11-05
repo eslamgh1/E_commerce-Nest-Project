@@ -7,6 +7,7 @@ import { Types } from 'mongoose';
 import { Compare } from 'src/common/security/hash';
 import { JwtService } from '@nestjs/jwt';
 import { TokenService } from 'src/common/service/token.services';
+import { S3Service } from 'src/common/service/s3.service';
 
 
 @Injectable()
@@ -14,7 +15,8 @@ export class UserService {
     constructor(
         private readonly userRepo: UserRepo,
         private readonly otpRepo: OtpRepo,
-        private TokenService: TokenService
+        private TokenService: TokenService,
+        private readonly s3Service: S3Service
     ) { }
 
 
@@ -170,6 +172,14 @@ export class UserService {
 
      
         return { message: "user logged in successfully" ,accessToken ,refreshToken }
+    }
+
+    async uploadFile(file: Express.Multer.File ,user:HUserDocument){
+        return this.s3Service.uploadFile({
+            file,
+            path: `users/${user._id}`,
+  
+        })
     }
 
 }

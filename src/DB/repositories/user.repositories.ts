@@ -3,6 +3,7 @@ import { HUserDocument, User } from "../models/user.models";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { Injectable } from "@nestjs/common";
+import { Brand } from "../models/brand.model";
 
 // type DBRepo<TDocument> hydrate document
 @Injectable()

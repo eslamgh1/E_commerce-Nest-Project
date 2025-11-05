@@ -1,12 +1,18 @@
-import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, MaxFileSizeValidator, ParseFilePipe, Patch, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { confirmEmailDto, loginDto, ResendOtpDto, UserDto } from '../dto/user.dto';
 import { UserService } from './user.service';
-import type {HUserDocument } from 'src/DB';
+import type { HUserDocument } from 'src/DB';
 import { User } from 'src/common/decorators/user.decorator';
 import { Auth } from 'src/common/decorators/auth.decorators';
+import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+
+import { LoggingInterceptor } from 'src/common/Interceptors';
+import { fileValidation, multerCloud, multerLocal } from 'src/common/utils';
+import { file } from 'zod';
+import { storageTypeEnum, TokenTypeEnum, userRole } from 'src/common';
 
 
-
+// @UseInterceptors(LoggingInterceptor)    
 @Controller('users')
 export class UserController {
     //userDto is a class that is used to validate the data that is sent to the server
@@ -36,18 +42,31 @@ export class UserController {
         return await this.userService.login(body);
     }
 
-    // @Token() 
-    // @Role([userRole.USER])
-    // @UseGuards(AuthunticationGuard,AuthorizationGuard)
+
+    @UseInterceptors(LoggingInterceptor)
     @Auth()
     @Get("profile")
-    
     profile(
-        @User() user:HUserDocument
+        @User() user: HUserDocument
     ) {
-    // console.log({req})
-
-        return { message: "profile" , user : user  }
+        // console.log({req})
+        return { message: "profile", user: user }
     }
+
+
+
+    @Auth({
+        role:[userRole.USER],
+        typeToken:TokenTypeEnum.access
+        })
+    @Post('upload')
+    @UseInterceptors(FileInterceptor(
+       "attachment", multerCloud({fileType:fileValidation.image})))
+    async uploadFile(@UploadedFile() file: Express.Multer.File , @User() user:HUserDocument) {
+        const url = await this.userService.uploadFile(file ,user);
+        console.log(url)
+        return {message:"file uploaded successfully" ,url}
+    }
+
 
 }
