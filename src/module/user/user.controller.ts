@@ -2,14 +2,14 @@ import { Body, Controller, Get, MaxFileSizeValidator, ParseFilePipe, Patch, Post
 import { confirmEmailDto, loginDto, ResendOtpDto, UserDto } from '../dto/user.dto';
 import { UserService } from './user.service';
 import type { HUserDocument } from 'src/DB';
-import { User } from 'src/common/decorators/user.decorator';
+import {  Userdecorator } from 'src/common/decorators/user.decorator';
 import { Auth } from 'src/common/decorators/auth.decorators';
-import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { LoggingInterceptor } from 'src/common/Interceptors';
 import { fileValidation, multerCloud, multerLocal } from 'src/common/utils';
-import { file } from 'zod';
-import { storageTypeEnum, TokenTypeEnum, userRole } from 'src/common';
+
+import {  TokenTypeEnum, userRole } from 'src/common';
 
 
 // @UseInterceptors(LoggingInterceptor)    
@@ -47,7 +47,7 @@ export class UserController {
     @Auth()
     @Get("profile")
     profile(
-        @User() user: HUserDocument
+        @Userdecorator() user: HUserDocument
     ) {
         // console.log({req})
         return { message: "profile", user: user }
@@ -62,7 +62,7 @@ export class UserController {
     @Post('upload')
     @UseInterceptors(FileInterceptor(
        "attachment", multerCloud({fileType:fileValidation.image})))
-    async uploadFile(@UploadedFile() file: Express.Multer.File , @User() user:HUserDocument) {
+    async uploadFile(@UploadedFile() file: Express.Multer.File , @Userdecorator() user:HUserDocument) {
         const url = await this.userService.uploadFile(file ,user);
         console.log(url)
         return {message:"file uploaded successfully" ,url}

@@ -17,7 +17,6 @@ export class MatchFields implements ValidatorConstraintInterface {
 }
 
 
-
 export function IsMatch(constraints: string[], validationOptions?: ValidationOptions) {
   return function (object: Object, propertyName: string) {
     registerDecorator({
@@ -31,10 +30,7 @@ export function IsMatch(constraints: string[], validationOptions?: ValidationOpt
 }
 
 
-
-
-
-export const User = createParamDecorator(
+export const Userdecorator = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     return request.user;

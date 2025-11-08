@@ -6,7 +6,7 @@ import { UserModule } from './module/user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { S3Service } from './common';
-import { BrandModule } from './brand/brand.module';
+import { BrandModule } from './module/brand/brand.module';
 
 // Both AppModule and AppController now use the same class referenc
 
@@ -16,7 +16,7 @@ import { BrandModule } from './brand/brand.module';
     envFilePath: './config/.env',
     isGlobal: true
   }), 
-  UserModule,
+  
   MongooseModule.forRoot(process.env.DB_URL_LOCAL as string , {
     
   onConnectionCreate: (connection: Connection) => {
@@ -26,7 +26,9 @@ import { BrandModule } from './brand/brand.module';
     return connection;
   }
   }),
-  BrandModule,
+  UserModule,
+  BrandModule
+
 
   ],
 
