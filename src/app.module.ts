@@ -7,6 +7,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { S3Service } from './common';
 import { BrandModule } from './module/brand/brand.module';
+import { CategoryModule } from './module/category/category.module';
+import { ProductModule } from './module/product/product.module';
+import { CartModule } from './module/cart/cart.module';
 
 // Both AppModule and AppController now use the same class referenc
 
@@ -27,7 +30,10 @@ import { BrandModule } from './module/brand/brand.module';
   }
   }),
   UserModule,
-  BrandModule
+  BrandModule,
+  CategoryModule,
+  ProductModule,
+  CartModule
 
 
   ],

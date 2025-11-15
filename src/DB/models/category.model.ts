@@ -7,7 +7,7 @@ import { HydratedDocument, Types, UpdateQuery } from "mongoose";
 import slugify from "slugify";
 
 @Schema({timestamps:true, toJSON:{virtuals:true},toObject:{virtuals:true}, strictQuery:true})
-export class Brand {
+export class Category {
 
     @Prop({type:String,required:true,trim:true,minlength:3,maxlength:100, unique:true})
     name: string;
@@ -22,6 +22,12 @@ export class Brand {
     @Prop({type:String,required:true})
     image: string;
 
+    @Prop({type:String})
+    assetFolderId:string;
+
+    // Relationship: Parent Child
+    @Prop({type:Types.ObjectId, ref:"Brand"})
+    brands: Types.ObjectId[]
 
     @Prop({type:Types.ObjectId, ref:"User"})
     createdBy: Types.ObjectId;
@@ -36,12 +42,12 @@ export class Brand {
    restoredAt: Date
 }
 
-export type HBrandDocument = HydratedDocument<Brand>;
+export type HCategoryDocument = HydratedDocument<Category>;
 
-export const BrandSchema = SchemaFactory.createForClass(Brand);
+export const CategorySchema = SchemaFactory.createForClass(Category);
 
-BrandSchema.pre(["updateOne" ,"findOneAndUpdate"], async function (next) {
-    const update = this.getUpdate() as UpdateQuery<Brand>
+CategorySchema.pre(["updateOne" ,"findOneAndUpdate"], async function (next) {
+    const update = this.getUpdate() as UpdateQuery<Category>
  
     if(update.name){
         update.slug = slugify(update.name , {replacement: "-" ,lower:true , trim:true})
@@ -50,7 +56,7 @@ BrandSchema.pre(["updateOne" ,"findOneAndUpdate"], async function (next) {
     next()  
 })
 
-BrandSchema.pre(["findOne" ,"find" ,"findOneAndUpdate"], async function(next){
+CategorySchema.pre(["findOne" ,"find" ,"findOneAndUpdate"], async function(next){
     const {paranoid , ...rest} = this.getQuery()
     if(paranoid === false){
         //deletedAt = true which means deleted
@@ -64,6 +70,6 @@ BrandSchema.pre(["findOne" ,"find" ,"findOneAndUpdate"], async function(next){
 }) // <--- Ensure the closing parenthesis is here!
 
 
-export const BrandModel = MongooseModule.forFeature([{ name: Brand.name, schema: BrandSchema }])
+export const CategoryModel = MongooseModule.forFeature([{ name: Category.name, schema: CategorySchema }])
 
 

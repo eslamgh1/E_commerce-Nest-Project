@@ -2,4 +2,8 @@ export * from "./db.repositories"
 export * from "./user.repositories"
 export * from "./otp.repositories"
 export * from "./brand.repositories"
+export * from "./category.repositories"
+export * from "./product.repositories"
+export * from "./cart.repositories"
+
 

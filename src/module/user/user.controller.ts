@@ -64,7 +64,7 @@ export class UserController {
        "attachment", multerCloud({fileType:fileValidation.image})))
     async uploadFile(@UploadedFile() file: Express.Multer.File , @Userdecorator() user:HUserDocument) {
         const url = await this.userService.uploadFile(file ,user);
-        console.log(url)
+        // console.log(url)
         return {message:"file uploaded successfully" ,url}
     }
 

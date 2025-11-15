@@ -77,8 +77,8 @@ export class UserService {
         })
 
         // console.log(user)
-        console.log("otp", user?.otp)
-        console.log("user", user)
+        // console.log("otp", user?.otp)
+        // console.log("user", user)
 
 
         if (!user) {

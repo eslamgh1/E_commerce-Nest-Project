@@ -19,7 +19,7 @@ export class AuthunticationGuard implements CanActivate {
     ): Promise<boolean> {
 
         const typeToken = this.reflector.get(tokenName,context.getHandler());
-    console.log({typeToken});
+    // console.log({typeToken});
         
         let req: any;
         let authorization: string = ""

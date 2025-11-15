@@ -80,13 +80,27 @@ export abstract class DBRepo<TDocument> {
 
 // create update one method
   async findOneAndUpdate(
-    filter: RootFilterQuery<TDocument>,
-    update: UpdateQuery<TDocument>,
-    options: QueryOptions<TDocument> = { new: true }
-  ): Promise<HydratedDocument<TDocument> | null> {
-    return this.model.findOneAndUpdate(filter, update, options);
+    {
+      filter,
+      update,
+      options
+    }: {
+      filter: RootFilterQuery<TDocument>,
+      update: UpdateQuery<TDocument>,
+      options: QueryOptions<TDocument> 
+    }): Promise<HydratedDocument<TDocument> | null> {
+    return this.model.findOneAndUpdate(filter, update ,{new:true});
   }
 
+// find one and delete method
+  async findOneAndDelete({
+    filter
+  }: {
+    filter: RootFilterQuery<TDocument>}): Promise<HydratedDocument<TDocument> | null> {
+    return this.model.findOneAndDelete(filter);
+  }
+
+  
 // create update many method
   async updateMany(filter: RootFilterQuery<TDocument>, update: UpdateQuery<TDocument>): Promise<import('mongoose').UpdateWriteOpResult> {
     return await this.model.updateMany(filter, update);
