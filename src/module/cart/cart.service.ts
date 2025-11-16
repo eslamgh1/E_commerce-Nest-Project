@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateCartDto, } from './cart.dto';
+import { CreateCartDto, updateQuantityDto, } from './cart.dto';
 import  {  CartRepo, ProductRepo } from 'src/DB';
 import type { HUserDocument } from 'src/DB';
 import { Types } from 'mongoose';
@@ -74,7 +74,8 @@ export class CartService {
         return cart
 
     }
-    // 1-----------------------Api : create Cart service
+
+    // 2-----------------------Api : Remove product from Cart service
     async removeProductFromCart(
         id: Types.ObjectId,
         user: HUserDocument,
@@ -93,6 +94,7 @@ export class CartService {
         const cart = await this.cartRepo.findOne({
             filter:{
                 createdBy: user._id,
+                products: {$elemMatch: {productId: id}} // as minimum one product exists which means ::  products.productId == id
             }
         })
 
@@ -101,8 +103,44 @@ export class CartService {
         }
 
 
+        cart.products = cart.products.filter((product) => product.productId.toString() !== id.toString())
         
         // save method is used to update as per the pre hook
+
+        await cart.save()
+        return cart
+
+    }
+    // 3-----------------------Api : Update product from Cart service
+    async updateQuantityFromCart(
+        id: Types.ObjectId,
+        user: HUserDocument,
+        body: updateQuantityDto
+    ) {
+
+        const {quantity} = body
+        const cart = await this.cartRepo.findOne({
+            filter:{
+                createdBy: user._id,
+                products: {$elemMatch: {productId: id}} // as minimum one product exists which means ::  products.productId == id
+            }
+        })
+
+        if (!cart) {
+            throw new BadRequestException('cart not found')
+        }
+
+
+        cart.products.find((product) => {
+            if(product.productId.toString() === id.toString()){
+                product.quantity = quantity
+            }
+            return product
+
+        })
+
+        
+       // save method is used to update as per the pre hook
 
         await cart.save()
         return cart

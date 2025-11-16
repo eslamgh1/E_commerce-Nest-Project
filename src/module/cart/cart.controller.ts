@@ -1,10 +1,10 @@
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post, Put } from '@nestjs/common';
 import type { HUserDocument } from 'src/DB';
 import { TokenTypeEnum, userRole } from 'src/common';
 import { Userdecorator } from 'src/common/decorators/user.decorator';
 import { Auth } from 'src/common/decorators/auth.decorators';
 import { CartService } from './cart.service';
-import { CreateCartDto, paramDto } from './cart.dto';
+import { CreateCartDto, paramDto, updateQuantityDto } from './cart.dto';
 
 
 @Controller('cart')
@@ -39,7 +39,22 @@ export class CartController {
     ) {
      
         const cart = await this.CartService.removeProductFromCart( param.id, user)
-        return { message: 'product / cart is removed successfully' ,param , user  }
+        return { message: 'product / cart is removed successfully' , cart  }
+    }
+    // 3-----------------------Api : update product quantity from cart
+    @Patch(":id")
+    @Auth({
+        role: [userRole.USER , userRole.ADMIN],
+        typeToken: TokenTypeEnum.access
+    })
+    async updateQuantityCart(
+        @Param() param: paramDto,
+        @Body() body: updateQuantityDto,
+        @Userdecorator() user: HUserDocument,
+    ) {
+     
+        const cart = await this.CartService.updateQuantityFromCart( param.id, user , body)
+        return { message: 'Cart is updated successfully' , cart  }
     }
 
 

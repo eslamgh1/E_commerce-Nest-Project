@@ -6,17 +6,22 @@ import { Types } from "mongoose";
 import { AtLeastOne } from "src/common/decorators/brand.decorator";
 
 
-export class CreateCartDto {
+
+export class updateQuantityDto {
+  @IsNumber()
+  @IsNotEmpty()
+  @Type(() => Number)
+  quantity: number
+
+}
+
+
+export class CreateCartDto extends updateQuantityDto {
 
   @IsMongoId()
   @IsNotEmpty()
   productId: Types.ObjectId;
 
-
-  @IsNumber()
-  @IsNotEmpty()
-  @Type(() => Number)
-  quantity: number
 
   // @IsMongoId()
   // @IsNotEmpty()
@@ -36,3 +41,5 @@ export class paramDto {
   @IsNotEmpty()
   id: Types.ObjectId;
 }
+
+
