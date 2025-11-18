@@ -5,5 +5,6 @@ export * from "./brand.repositories"
 export * from "./category.repositories"
 export * from "./product.repositories"
 export * from "./cart.repositories"
+export * from "./coupon.repositories"
 
 

@@ -1,5 +1,5 @@
 import { MongooseModule, Prop, Schema, SchemaFactory, Virtual } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
+import { HydratedDocument, Types } from "mongoose";
 import { userGender, userProvider, userRole } from "src/common/enums";
 import type { HOtpDocument } from "./otp.models";
 import { Hash } from "src/common/security/hash";
@@ -51,8 +51,11 @@ export class User {
     changecredentailAt: Date;
 
     @Virtual()
-    otp:HOtpDocument
+    otp?:HOtpDocument
 
+    //wishList part
+    @Prop({type:[{type:Types.ObjectId, ref:"Product"}]})
+    wishList?:Types.ObjectId[]
 }
 
 export type HUserDocument = HydratedDocument<User>;

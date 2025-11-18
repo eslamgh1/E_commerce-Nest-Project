@@ -37,12 +37,14 @@ export class UserController {
 
         return await this.userService.confirmEmail(body);
     }
+
+    //login method is used to login a user
     @Post("login")
     async login(@Body() body: loginDto) {
         return await this.userService.login(body);
     }
 
-
+//profile method is used to get the profile of the user
     @UseInterceptors(LoggingInterceptor)
     @Auth()
     @Get("profile")
@@ -54,7 +56,7 @@ export class UserController {
     }
 
 
-
+//uploadFile method is used to upload a file
     @Auth({
         role:[userRole.USER],
         typeToken:TokenTypeEnum.access

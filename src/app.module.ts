@@ -10,6 +10,7 @@ import { BrandModule } from './module/brand/brand.module';
 import { CategoryModule } from './module/category/category.module';
 import { ProductModule } from './module/product/product.module';
 import { CartModule } from './module/cart/cart.module';
+import { CouponModule } from './module/coupon/coupon.module';
 
 // Both AppModule and AppController now use the same class referenc
 
@@ -33,7 +34,8 @@ import { CartModule } from './module/cart/cart.module';
   BrandModule,
   CategoryModule,
   ProductModule,
-  CartModule
+  CartModule,
+  CouponModule
 
 
   ],

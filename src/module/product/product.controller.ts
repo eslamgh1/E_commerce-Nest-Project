@@ -12,7 +12,7 @@ import { CreateProductDto, paramDto, updateProductDto } from './product.dto';
 export class ProductController {
     constructor(private readonly ProductService: ProductService) { }
 
-    // 1-----------------------Api : create brand
+    // 1-----------------------Api : create Product
 
     @Auth({
         role: [userRole.USER],
@@ -50,7 +50,6 @@ export class ProductController {
         role: [userRole.USER],
         typeToken: TokenTypeEnum.access
     })
-
     async updateProduct(
         @Param() param:paramDto,
         @Body() body: updateProductDto,
@@ -59,6 +58,23 @@ export class ProductController {
 
         const product = await this.ProductService.updateProduct(body, user , param.id)
         return { message: 'Product is updated successfully', product }
+    }
+
+
+    //3-----------------------Api : add to wish list
+
+    @Post("wishlist/:id")
+    @Auth({
+        role: [userRole.USER],
+        typeToken: TokenTypeEnum.access
+    })
+    async addToWishList(
+        @Param() param:paramDto,
+        @Userdecorator() user: HUserDocument,
+    ) {
+
+        const userExist = await this.ProductService.addToWishListProduct(  user , param.id)
+        return { message: 'Product is  added to wish list successfully', userExist }
     }
 
 

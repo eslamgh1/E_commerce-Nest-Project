@@ -26,7 +26,9 @@ export class Category {
     assetFolderId:string;
 
     // Relationship: Parent Child
-    @Prop({type:Types.ObjectId, ref:"Brand"})
+
+    // supports populate
+    @Prop({type:[{type:Types.ObjectId, ref:"Brand"}]})
     brands: Types.ObjectId[]
 
     @Prop({type:Types.ObjectId, ref:"User"})

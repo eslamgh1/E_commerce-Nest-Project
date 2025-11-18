@@ -9,6 +9,6 @@ import { S3Service } from 'src/common';
 @Module({
   imports:[BrandModel ,UserModel ,ProductModel,CategoryModel],
   controllers: [ProductController],
-  providers: [ProductService , TokenService ,JwtService , UserRepo ,BrandRepo ,S3Service , CategoryRepo ,ProductRepo]
+  providers: [ProductService , TokenService ,JwtService , UserRepo ,BrandRepo ,S3Service , CategoryRepo ,ProductRepo ]
 })
 export class ProductModule {}

@@ -4,4 +4,5 @@ export * from './role.decorators';
 export * from './auth.decorators';
 export * from './brand.decorator';
 export * from './category.decorator';
+export * from './coupon.decorator';
 

@@ -1,9 +1,11 @@
 import { BadRequestException, ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { CreateProductDto, paramDto, updateProductDto } from './product.dto';
+import { CreateProductDto, updateProductDto } from './product.dto';
 import { CategoryRepo, ProductRepo } from 'src/DB';
 import { BrandRepo } from 'src/DB/repositories/brand.repositories';
 import { S3Service } from 'src/common';
 import type { HUserDocument } from 'src/DB';
+import { UserRepo } from 'src/DB/repositories/user.repositories';
+
 import { Types } from 'mongoose';
 
 
@@ -15,6 +17,7 @@ export class ProductService {
         private readonly categoryRepo: CategoryRepo,
         private readonly brandRepo: BrandRepo,
         private readonly s3Service: S3Service,
+        private readonly UserRepo: UserRepo
 
     ) { }
 
@@ -147,6 +150,38 @@ export class ProductService {
    
 
        return product
+    }
+    // 3-----------------------Api : wish List products
+    async addToWishListProduct(
+        user: HUserDocument,
+        id:Types.ObjectId, // = paramDto
+    ) {
+
+       let product = await this.ProductRepo.findOne({filter:{_id:id}})
+       if(!product){
+        throw new BadRequestException("Product not found")
+       }
+
+        let userExist = await this.UserRepo.findOneAndUpdate({
+            filter:{_id:user._id , wishList:{$in:id }} , 
+            update:{
+                $pull:{wishList:id}
+            } , 
+            options:{new:true}
+        })
+
+        if(!userExist){
+            userExist = await this.UserRepo.findOneAndUpdate({
+                filter:{_id:user._id} , 
+                update:{
+                    $push:{wishList:id}
+                } , 
+                options:{new:true}
+            })
+        }
+
+        return userExist
+     
     }
 
 
