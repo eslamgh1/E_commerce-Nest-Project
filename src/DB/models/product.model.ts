@@ -31,7 +31,7 @@ export class Product {
     @Prop({ required: true, type: number })
     price: number;
 
-    @Prop({ type: number, min: 1, max: 100 })
+    @Prop({ type: Number, min: 1, max: 100 })
     discount: number;
 
     @Prop({ type: Types.ObjectId, ref: "Brand" })
@@ -40,10 +40,10 @@ export class Product {
     @Prop({ type: Types.ObjectId, ref: "Category" })
     category: Types.ObjectId;
 
-    @Prop({ type: number, min: 1, max: 100 })
+    @Prop({ type: Number, min: 1, max: 100 })
     quantity: number;
 
-    @Prop({ type: number })
+    @Prop({ type: Number })
     stock: number;
 
 

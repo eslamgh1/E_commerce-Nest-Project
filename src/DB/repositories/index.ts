@@ -7,5 +7,7 @@ export * from "./product.repositories"
 export * from "./cart.repositories"
 export * from "./coupon.repositories"
 export * from "./subCategory.repositories"
+export * from "./order.repositories"
+
 
 

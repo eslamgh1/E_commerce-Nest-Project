@@ -12,6 +12,7 @@ import { ProductModule } from './module/product/product.module';
 import { CartModule } from './module/cart/cart.module';
 import { CouponModule } from './module/coupon/coupon.module';
 import { SubCategoryModule } from './module/subcategory/subCategory.module';
+import { OrderModule } from './module/order/order.module';
 
 // Both AppModule and AppController now use the same class referenc
 
@@ -37,7 +38,8 @@ import { SubCategoryModule } from './module/subcategory/subCategory.module';
   ProductModule,
   CartModule,
   CouponModule,
-  SubCategoryModule
+  SubCategoryModule,
+  OrderModule
 
 
   ],

@@ -3,7 +3,7 @@ import { HydratedDocument, Types, UpdateQuery } from "mongoose";
 
 
 @Schema({ timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true }, strictQuery: true })
-export class CartProduct {
+export class    CartProduct {
 
     @Prop({ type: Types.ObjectId, ref: "Product", required: true })
     productId: Types.ObjectId;
