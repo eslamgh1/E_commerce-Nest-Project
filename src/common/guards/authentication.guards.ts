@@ -18,9 +18,13 @@ export class AuthunticationGuard implements CanActivate {
         context: ExecutionContext,
     ): Promise<boolean> {
 
-        const typeToken = this.reflector.get(tokenName,context.getHandler());
-    // console.log({typeToken});
-        
+        const typeToken = this.reflector.get(tokenName, context.getHandler());
+        // console.log({typeToken});
+
+        // console.log({type:context.getType()})
+
+        // console.log({type:context['contextType']})
+
         let req: any;
         let authorization: string = ""
 
@@ -28,9 +32,12 @@ export class AuthunticationGuard implements CanActivate {
             req = context.switchToHttp().getRequest();
             authorization = req.headers?.authorization!;
         }
-        // else if (context.getType() === 'ws') {
+        else if (context.getType() === 'ws') {
+            req = context.switchToWs().getClient();
+            authorization = req.handshake.headers.authorization;
+        } else if (context.getType() === 'rpc') {
 
-        // }
+        }
 
         try {
 
@@ -44,7 +51,7 @@ export class AuthunticationGuard implements CanActivate {
                 throw new BadRequestException("Provide us with valid token/prefix");
             }
             //& generate signature
-            const signature = await this.tokenService.GenerateSignature(prefix,typeToken)
+            const signature = await this.tokenService.GenerateSignature(prefix, typeToken)
             if (!signature) {
                 throw new BadRequestException("Invalid Signature");
             }
@@ -61,7 +68,7 @@ export class AuthunticationGuard implements CanActivate {
             req.decoded = decoded;
             return true;
 
-             
+
         } catch (error) {
             throw new BadRequestException("Invalid Token");
         }

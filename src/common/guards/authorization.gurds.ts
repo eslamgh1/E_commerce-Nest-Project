@@ -16,13 +16,27 @@ export class AuthorizationGuard implements CanActivate {
     async canActivate(
         context: ExecutionContext,
     ): Promise<boolean> {
-       
-        try {
-             //get request
-            const req = context.switchToHttp().getRequest();
 
+        try {
+            //get request
+
+            // const req = context.switchToHttp().getRequest();
+            // Start point added to handle context
+            let req: any;
+
+            let authorization: string = ""
+            if (context.getType() === 'http') {
+                req = context.switchToHttp().getRequest();
+                authorization = req.headers?.authorization!;
+            }
+            else if (context.getType() === 'ws') {
+                req = context.switchToWs().getClient();
+                authorization = req.handshake.headers.authorization;
+            } else if (context.getType() === 'rpc') {
+            }
+            // End point added to handle context
             //get access roles
-            const access_roles : userRole[] = this.reflector.get(roleName, context.getHandler());
+            const access_roles: userRole[] = this.reflector.get(roleName, context.getHandler());
 
             console.log({ access_roles });
 
@@ -30,7 +44,7 @@ export class AuthorizationGuard implements CanActivate {
                 throw new BadRequestException("You are not authorized");
             }
             return true;
-//ch erro msg
+            //ch erro msg
         } catch (error: any) {
             throw new BadRequestException(error.message);
         }

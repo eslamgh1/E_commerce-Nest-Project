@@ -13,6 +13,7 @@ import { CartModule } from './module/cart/cart.module';
 import { CouponModule } from './module/coupon/coupon.module';
 import { SubCategoryModule } from './module/subcategory/subCategory.module';
 import { OrderModule } from './module/order/order.module';
+import { GatewayModule } from './module/gateway/gateway.module';
 
 // Both AppModule and AppController now use the same class referenc
 
@@ -32,6 +33,7 @@ import { OrderModule } from './module/order/order.module';
     return connection;
   }
   }),
+  GatewayModule,
   UserModule,
   BrandModule,
   CategoryModule,

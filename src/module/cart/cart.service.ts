@@ -3,6 +3,7 @@ import { CreateCartDto, updateQuantityDto, } from './cart.dto';
 import  {  CartRepo, ProductRepo } from 'src/DB';
 import type { HUserDocument } from 'src/DB';
 import { Types } from 'mongoose';
+import { SocketGateway } from '../gateway/socket.gateway';
 
 
 
@@ -12,6 +13,7 @@ export class CartService {
     constructor(
         private readonly cartRepo: CartRepo,
         private readonly ProductRepo: ProductRepo,
+        private readonly SocketGateway:SocketGateway
 
     ) { }
 
@@ -69,6 +71,10 @@ export class CartService {
         })
         
         // save method is used to update as per the pre hook
+
+        //*Start********Socet service to send notification when creating cart ***********/
+        this.SocketGateway.handleProductQunantityChange(productId,quantity)
+        //*End ******************Socet service to send notification when creating cart **********/
 
         await cart.save()
         return cart
