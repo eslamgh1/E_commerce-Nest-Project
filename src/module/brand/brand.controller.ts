@@ -124,6 +124,17 @@ import { Types } from 'mongoose';
             return {message:"Done All brands",brands}
         }
 
+        // 8------------------------Api : get All brands with cashing
+        @Get("/getbrandscash")
+        async getAllBrandsCashing(
+            // query: QueryDto  == query: {page: number, limit: number}
+            @Query() query: QueryDto
+        ) {
+            const brands = await this.brandService.getAllBrandsCashing(query)
+            return {message:"Done All brands",brands}
+            
+        }
+
 
 
 

@@ -14,6 +14,7 @@ import { CouponModule } from './module/coupon/coupon.module';
 import { SubCategoryModule } from './module/subcategory/subCategory.module';
 import { OrderModule } from './module/order/order.module';
 import { GatewayModule } from './module/gateway/gateway.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 // Both AppModule and AppController now use the same class referenc
 
@@ -23,7 +24,12 @@ import { GatewayModule } from './module/gateway/gateway.module';
     envFilePath: './config/.env',
     isGlobal: true
   }), 
-  
+// cashing
+  CacheModule.register({
+  isGlobal: true,
+  ttl:5000
+}),
+
   MongooseModule.forRoot(process.env.DB_URL_LOCAL as string , {
     
   onConnectionCreate: (connection: Connection) => {

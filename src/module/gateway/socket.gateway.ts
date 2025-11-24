@@ -35,7 +35,7 @@ this.io.emit('backend', {message:"I am Full stack developer"}) // emit to all cl
 
 
 handleConnection(socket:Socket){
-    console.log(socket)
+    // console.log(socket)
     console.log(socket.id)
     console.log("Client connected")
 }

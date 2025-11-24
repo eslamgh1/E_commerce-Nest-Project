@@ -1,9 +1,10 @@
-import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateBrandDto, QueryDto, updateBrandDto } from './brand.dto';
 import { HUserDocument } from 'src/DB';
 import { BrandRepo } from 'src/DB/repositories/brand.repositories';
 import { S3Service } from 'src/common';
 import { Types } from 'mongoose';
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 
 
 @Injectable()
@@ -12,6 +13,8 @@ export class BrandService {
     constructor(
         private readonly brandRepo: BrandRepo,
         private readonly s3Service: S3Service,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache
+
 
     ) { }
 
@@ -173,6 +176,39 @@ export class BrandService {
           }
         })
         return {message:"Done All brands", currentPage  ,totalDocs ,numPages,docs }
+    }
+    //8-------------------------Api: get All brands with cashing
+    async getAllBrandsCashing(query:QueryDto) {
+        // const {page = 1,limit = 1  ,search} = query
+        // const {currentPage ,totalDocs ,numPages ,docs} = await this.brandRepo.paginate({
+        //           filter:{ 
+        //         ...search ? {
+        //             $or:[
+        //                 {name:{$regex:search,$options:'i'}},
+        //                 {slogan:{$regex:search,$options:'i'}}
+        //             ]
+        //         } : {}
+        //     },
+        //     // filter:{ 
+        //     //     ...search ? {name:{$regex:search,$options:'i'}} : {}
+        //     // },
+        //   query:{
+        //     page,
+        //     limit,
+        //   }
+        // })
+        // return {message:"Done All brands", currentPage  ,totalDocs ,numPages,docs }
+
+
+        let brands = await this.cacheManager.get("brands")
+        if(!brands){
+            console.log("cashing test")
+            await this.brandRepo.find({filter:{}})
+            await this.cacheManager.set("brands" ,brands)
+        }
+
+        return brands
+
     }
 
 
