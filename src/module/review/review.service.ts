@@ -27,9 +27,9 @@ export class ReviewService {
        // 1. Fetch the order for validation
 const order = await this.orderRepo.findOne({
         filter: {
-            _id: orderId, // Target the specific order ID
-            userID: user._id, // Ensure user owns the order
-            // Recommended: Filter for completed orders (e.g., status: orderStatusEnum.delivered)
+            _id: orderId, 
+            userID: user._id, 
+           
         },
         options: {
             populate: [
