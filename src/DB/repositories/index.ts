@@ -8,6 +8,5 @@ export * from "./cart.repositories"
 export * from "./coupon.repositories"
 export * from "./subCategory.repositories"
 export * from "./order.repositories"
-
-
+export * from "./review.repositories"
 

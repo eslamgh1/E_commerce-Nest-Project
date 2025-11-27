@@ -15,7 +15,6 @@ export class SubCategoryService {
         private readonly s3Service: S3Service,
         private readonly brandRepo: BrandRepo,
 
-
     ) { }
 
     // 1-----------------------Api : create SubCategory service

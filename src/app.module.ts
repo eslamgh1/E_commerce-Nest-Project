@@ -15,6 +15,7 @@ import { SubCategoryModule } from './module/subcategory/subCategory.module';
 import { OrderModule } from './module/order/order.module';
 import { GatewayModule } from './module/gateway/gateway.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { ReviewModule } from './module/review/review.module';
 
 // Both AppModule and AppController now use the same class referenc
 
@@ -47,7 +48,8 @@ import { CacheModule } from '@nestjs/cache-manager';
   CartModule,
   CouponModule,
   SubCategoryModule,
-  OrderModule
+  OrderModule,
+  ReviewModule
 
 
   ],

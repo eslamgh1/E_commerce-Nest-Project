@@ -19,7 +19,6 @@ export class OrderService {
         private readonly productRepo: ProductRepo,
         private readonly stripService: StripeServices
 
-
     ) { }
 
     // 1-----------------------Api :  create Order
@@ -148,9 +147,13 @@ export class OrderService {
                 ]
             }
         })
+
+          console.log({order})
         if (!order || !order.cart["products"].length) {
             throw new ConflictException('order not found')
         }
+
+        // console.log({order})
 
         // check coupon exists
         let coupon: any
@@ -159,7 +162,7 @@ export class OrderService {
             coupon = await this.stripService.createCoupon({
                 percent_off: (order.coupon as any)?.amount,
             })
-            console.log(coupon)
+            // console.log(coupon)
         }
 
         //         let coupon: any;

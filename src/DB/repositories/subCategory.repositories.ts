@@ -13,5 +13,4 @@ export class SubCategoryRepo extends DBRepo<HSubCategoryDocument> {
         super(model)
     }
 
-
 }
