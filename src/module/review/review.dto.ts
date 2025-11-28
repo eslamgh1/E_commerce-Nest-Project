@@ -26,9 +26,47 @@ export class CreateReviewDto {
   @IsNotEmpty()
   orderId: Types.ObjectId;
 
+  // @IsMongoId()
+  // @IsNotEmpty()
+  // productId: Types.ObjectId;
+
   @IsMongoId()
   @IsNotEmpty()
-  productId: Types.ObjectId;
+  cartId: Types.ObjectId;
+
+
+  @IsMongoId()
+  @IsNotEmpty()
+  user: Types.ObjectId;
+
+}
+
+export class UpdateReviewDto {
+  @IsNumber()
+  @IsNotEmpty()
+  rating: number;
+
+  @IsString()
+  @Length(2, 100)
+  @IsNotEmpty()
+  title: string;
+
+  @IsString()
+  @Length(2, 500)
+  @IsNotEmpty()
+  cstReview: string;
+
+  @IsMongoId()
+  @IsNotEmpty()
+  orderId: Types.ObjectId;
+
+  @IsMongoId()
+  @IsNotEmpty()
+  reviewId: Types.ObjectId;
+  
+  @IsMongoId()
+  @IsNotEmpty()
+  cartId: Types.ObjectId;
 
 
   @IsMongoId()

@@ -18,9 +18,12 @@ export class Review {
     @Prop({ type: Types.ObjectId, ref: "Order", required: true })
     orderId: Types.ObjectId;
     
-    // Modified: Single Product Reference
-    @Prop({ type: Types.ObjectId, ref: "Product", required: true })
-    productId: Types.ObjectId;
+    // // Modified: Single Product Reference
+    // @Prop({ type: Types.ObjectId, ref: "Product", required: true })
+    // productId: Types.ObjectId;
+
+    @Prop({type:Types.ObjectId, ref:"Cart" ,required:true})
+    cartId: Types.ObjectId;
 
     // used by
     @Prop({ type: Types.ObjectId, ref: "User", required: true })
