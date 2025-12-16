@@ -5,7 +5,8 @@ import express, { type Express } from 'express';
 import { ValidationPipe } from '@nestjs/common';
 import path from 'path';
 
-const appModulePath = path.join(process.cwd(), 'dist', 'app.module.js');
+const appModulePath = path.join(__dirname, '..', 'dist', 'src', 'app.module.js');
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { AppModule } = require(appModulePath);
 

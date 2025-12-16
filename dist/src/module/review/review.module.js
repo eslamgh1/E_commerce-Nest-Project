@@ -1,0 +1,28 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ReviewModule = void 0;
+const common_1 = require("@nestjs/common");
+const review_service_1 = require("./review.service");
+const DB_1 = require("../../DB");
+const token_services_1 = require("../../common/service/token.services");
+const jwt_1 = require("@nestjs/jwt");
+const common_2 = require("../../common");
+const review_controller_1 = require("./review.controller");
+const order_model_1 = require("../../DB/models/order.model");
+let ReviewModule = class ReviewModule {
+};
+exports.ReviewModule = ReviewModule;
+exports.ReviewModule = ReviewModule = __decorate([
+    (0, common_1.Module)({
+        imports: [DB_1.UserModel, DB_1.ReviewModel, order_model_1.OrderModel, DB_1.CartModel],
+        controllers: [review_controller_1.ReviewController],
+        providers: [review_service_1.ReviewService, token_services_1.TokenService, jwt_1.JwtService, DB_1.UserRepo, common_2.S3Service, DB_1.ReviewRepo, DB_1.CartRepo, DB_1.OrderRepo]
+    })
+], ReviewModule);
+//# sourceMappingURL=review.module.js.map
