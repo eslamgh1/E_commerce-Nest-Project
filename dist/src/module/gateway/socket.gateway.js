@@ -48,10 +48,11 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], SocketGateway.prototype, "handleSayHiEvent", null);
 exports.SocketGateway = SocketGateway = __decorate([
-    (0, websockets_1.WebSocketGateway)(80, { namespace: '/socket',
+    (0, websockets_1.WebSocketGateway)({
+        namespace: '/socket',
         cors: {
-            origin: "*",
-        }
+            origin: '*',
+        },
     }),
     __metadata("design:paramtypes", [])
 ], SocketGateway);
